@@ -9,31 +9,48 @@ class Tickets extends Model
 {
     protected $fillable = ['title', 'description', 'status', 'priority','user_id','assignee_id'];
 
-    public function getDescription(): string
+    public function getDescriptionShortAttribute(): string
     {
-
-
-
         return substr($this->description, 0, 50). ( strlen($this->description) > 50 ? "..." : null );
     }
-    public function getPriority(): string{
-        $priorities = [
+    public function getPriorityLabelAttribute(): string
+    {
+        return match($this->priority) {
             'low' => 'Baja',
             'medium' => 'Media',
             'high' => 'Alta',
-            'urgent' => "Urgente"
-        ];
-        return $priorities[$this->priority];
+            'urgent' => 'Urgente',
+            default => 'Desconocido'
+        };
     }
-    public function getStatus(): string
+    public function getStatusColorAttribute(): string
     {
-        $statuses = [
+        return match($this->status) {
+            'open' => 'info',
+            'in progress' => 'warning',
+            'closed' => 'success',
+            default => 'secondary'
+        };
+    }
+    public function getPriorityColorAttribute(): string
+    {
+        return match($this->priority) {
+            'low' => 'info',
+            'medium' => 'primary',
+            'high' => 'warning',
+            'urgent' => 'danger',
+            default => 'secondary'
+        };
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return match($this->status){
             'open' => 'Abierto',
             'in progress' => 'En proceso',
             'closed' => 'Cerrado',
-        ];
-
-        return $statuses[$this->status];
+            default => 'Desconocido'
+        };
     }
 
     public function user(): BelongsTo

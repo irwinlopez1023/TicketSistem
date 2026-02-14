@@ -11,16 +11,17 @@
                    <td>Prioridad</td>
                </tr>
            </thead>
-           @endif
            <tbody>
+           @endif
             <tr>
                 <td>{{ $ticket->title }}</td>
-                <td>{{ $ticket->getDescription() }}</td>
-                <td>{{ $ticket->getStatus() }}</td>
-                <td>{{ $ticket->getPriority() }}</td>
+                <td>{{ $ticket->description_short }}</td>
+                <td><x-badge :text="$ticket->status_label" :color="$ticket->status_color"></x-badge></td>
+                <td><x-badge :text="$ticket->priority_label" :color="$ticket->priority_color" />
+                </td>
             </tr>
-           </tbody>
            @if($loop->last)
+           </tbody>
             </table>
            @endif
     @empty
