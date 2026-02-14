@@ -20,8 +20,11 @@
     <div class="row">
         @include('layouts.partials.sidebar')
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-
-            {{ $slot }}
+            <div class="row mt-3">
+                <div class="col-12">
+                    {{ $slot }}
+                </div>
+            </div>
 
         </main>
     </div>

@@ -1,7 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Tickets\Users\UserTicketController;
 use Illuminate\Support\Facades\Route;
+
+Route::Resource('tickets', UserTicketController::class)->middleware('auth')->names('user.tickets');
+
+
 
 Route::get('/test', function () {
     return view('test');
