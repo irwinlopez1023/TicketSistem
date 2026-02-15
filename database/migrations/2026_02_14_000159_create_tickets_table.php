@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('status')->default('open');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('assignee_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
             $table->string('priority')->default('low');
             $table->timestamps();
             $table->softDeletes();
