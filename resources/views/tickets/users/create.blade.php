@@ -1,5 +1,9 @@
 <x-bootstrap>
 
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1>Crear ticket</h1>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -30,8 +34,21 @@
                 <option value="urgent">Urgente</option>
             </select>
         </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Categoría</label>
+            <select class="form-select" name="category" id="category" required>
+
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+
 
         <button type="submit" class="btn btn-primary">Crear ticket</button>
     </form>
-
+            </div>
+    </div>
+    </div>
 </x-bootstrap>

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('assignee_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->string('priority')->default('low');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

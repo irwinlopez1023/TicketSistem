@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Models\Tickets;
+namespace App\Models\Ticket;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Tickets extends Model
+class Ticket extends Model
 {
+    use SoftDeletes;
     protected $fillable = ['title', 'description', 'status', 'priority','user_id','assignee_id'];
 
     public function getDescriptionShortAttribute(): string

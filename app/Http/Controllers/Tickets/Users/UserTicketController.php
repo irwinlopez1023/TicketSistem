@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Tickets\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ticket\Category;
 use Illuminate\Http\Request;
 
-use App\Models\Tickets\Tickets;
+use App\Models\Ticket\Ticket;
 
 class UserTicketController extends Controller
 {
     public function index()
     {
-        $tickets = Tickets::where('user_id', auth()->id())->get();
+        $tickets = Ticket::where('user_id', auth()->id())->get();
 
         return view('tickets.users.index',compact('tickets'));
     }
@@ -21,7 +22,8 @@ class UserTicketController extends Controller
      */
     public function create()
     {
-        return view('tickets.users.create');
+        $categories = Category::all();
+        return view('tickets.users.create', compact('categories'));
     }
 
     /**
@@ -35,7 +37,7 @@ class UserTicketController extends Controller
             'priority' => 'required|in:low,medium,high,urgent'
         ]);
 
-        Tickets::create([
+        Ticket::create([
             'title' => $request->title,
             'description' => $request->description,
             'priority' => $request->priority,
