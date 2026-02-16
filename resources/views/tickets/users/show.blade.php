@@ -10,7 +10,6 @@
                         </h5>
                         <x-badge :priority="$ticket->priority" :color="$ticket->priorityColor" :text="$ticket->priorityLabel"></x-badge>
                     </div>
-
                     <div class="mt-2 small text-muted d-flex flex-wrap gap-3">
                         <span>
                             <i class="bi bi-folder2-open"></i>
@@ -25,17 +24,13 @@
                             {{ $ticket->created_at->diffForHumans() }}
                         </span>
                     </div>
-
                 </div>
             </div>
-
             <div class="card mb-4 shadow-sm">
                 <div class="card-header bg-light">
                     <strong>Ticket # {{ $ticket->id }}</strong>
                 </div>
-
                 <div class="card-body">
-
                     <div class="d-flex mb-3 ">
                         <div class="p-3 rounded bg-light border" style="max-width: 75%;">
                             <div class="small mb-1 text-muted">
@@ -47,7 +42,6 @@
                             </div>
                         </div>
                     </div>
-
                     @forelse ($ticket->replies as $reply)
                         <div class="d-flex mb-3 {{ $reply->isFromTicketOwner() ? '' : 'justify-content-end' }}">
                             <div class="p-3 rounded {{ $reply->isFromTicketOwner() ? 'bg-light border' : 'bg-primary text-white' }}" style="max-width: 75%;">
@@ -66,20 +60,16 @@
                     @endforelse
                 </div>
             </div>
-
             @if($ticket->isClosed())
                 <div class="alert alert-danger" role="alert">
                     El ticket ha sido cerrado, ya no puedes responder.
                 </div>
             @else
-
                 @cannot('reply', $ticket)
                     <div class="alert alert-warning" role="alert">
                         Debes esperar a que el ticket sea contestado para poder responder.
                     </div>
                 @endcannot
-
-
                     @can('reply', $ticket)
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
@@ -98,7 +88,6 @@
                             </div>
                         </div>
                     @endcan
-
                 @can('close',$ticket)
                     <form action="{{ route('user.tickets.close', $ticket) }}" method="POST">
                         @csrf
@@ -107,14 +96,7 @@
                     </form>
                 @endcan
             @endif
-
-
-
-
-
-
         </div>
     </div>
 </div>
-
 </x-bootstrap>
