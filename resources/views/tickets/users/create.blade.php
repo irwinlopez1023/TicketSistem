@@ -20,7 +20,7 @@
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Titulo</label>
-            <input type="text" class="form-control" id="title" name="title" placeholder="Titulo" required>
+            <input type="text" class="form-control" minlength="10" id="title" name="title" placeholder="Titulo" required>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Descripción</label>

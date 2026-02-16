@@ -27,12 +27,14 @@
             </li>
 
 
+            @if(Auth()->user()->can('tickets.create'))
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center gap-2" aria-current="page" href="{{ route('user.tickets.create') }}">
                     <svg class="bi" aria-hidden="true"><use xlink:href="#house-fill"></use></svg>
                     Crear ticket
                 </a>
             </li>
+        @endif
 
     </div>
 </div>

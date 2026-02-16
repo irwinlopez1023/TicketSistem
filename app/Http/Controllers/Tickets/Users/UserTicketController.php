@@ -7,9 +7,6 @@ use App\Models\Ticket\Category;
 use App\Models\Ticket\TicketReply;
 use Illuminate\Http\Request;
 use App\Models\Ticket\Ticket;
-use Illuminate\Support\Facades\Session;
-use App\Policies\TicketPolicy;
-Use App\Models\User;
 class UserTicketController extends Controller
 {
     public function index()
@@ -52,22 +49,18 @@ class UserTicketController extends Controller
 
         $ticket = Ticket::findOrFail($id);
 
-        $this->authorize('reply', [Ticket::class, $ticket]);
+        $this->authorize('reply', $ticket);
         $request->validate([
             'message' => 'required|min:10',
         ]);
 
-
         if (Auth()->user()->id != $ticket->user_id){
-            if (empty($ticket->assignee_id)){
-                $ticket->assignee_id = Auth()->user()->id;
-            }
+            if (empty($ticket->assignee_id)){ $ticket->assignee_id = Auth()->user()->id; }
             $ticket->status = 'answered';
-            $ticket->save();
         }else{
             $ticket->status = 'open';
-            $ticket->save();
         }
+        $ticket->save();
 
         $reply = TicketReply::create([
             'ticket_id' => $ticket->id,
@@ -81,7 +74,7 @@ class UserTicketController extends Controller
     public function close(Request $request, string $id)
     {
         $ticket = Ticket::findOrFail($id);
-        $this->authorize('reply', [Ticket::class, $ticket]);
+        $this->authorize('close', $ticket);
 
         $ticket->status = "closed";
         $ticket->save();
@@ -94,7 +87,7 @@ class UserTicketController extends Controller
     public function show(string $id)
     {
         $ticket = Ticket::findOrFail($id);
-        $this->authorize('view', [Ticket::class , $ticket]);
+        $this->authorize('view', $ticket);
 
         return view('tickets.users.show', compact('ticket'));
     }

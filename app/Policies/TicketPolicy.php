@@ -35,4 +35,12 @@ class TicketPolicy
         return true;
     }
 
+    public function close(User $user, Ticket $ticket)
+    {
+        if (!$user->can('tickets.reply') || $ticket->isClosed()) return false;
+        if ($user->can('tickets.view.all')) return true;
+        if ($ticket->user_id !== $user->id) return false;
+        return true;
+    }
+
 }

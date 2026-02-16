@@ -20,7 +20,6 @@
                             <i class="bi bi-person"></i>
                             {{ $ticket->user->name }}
                         </span>
-
                         <span>
                             <i class="bi bi-clock"></i>
                             {{ $ticket->created_at->diffForHumans() }}
@@ -50,87 +49,69 @@
                     </div>
 
                     @forelse ($ticket->replies as $reply)
-
                         <div class="d-flex mb-3 {{ $reply->isFromTicketOwner() ? '' : 'justify-content-end' }}">
-
-                            <div class="p-3 rounded
-                    {{ $reply->isFromTicketOwner() ? 'bg-light border' : 'bg-primary text-white' }}"
-                                 style="max-width: 75%;">
-
-                                <div class="small mb-1
-                        {{ $reply->isFromTicketOwner() ? 'text-muted' : 'text-white-50' }}">
-
+                            <div class="p-3 rounded {{ $reply->isFromTicketOwner() ? 'bg-light border' : 'bg-primary text-white' }}" style="max-width: 75%;">
+                                <div class="small mb-1 {{ $reply->isFromTicketOwner() ? 'text-muted' : 'text-white-50' }}">
                                     <i class="bi bi-person"></i>
                                     {{ $reply->user->name }}
-
-                                    <span class="ms-2">
-                            <i class="bi bi-clock"></i>
-                            {{ $reply->created_at->diffForHumans() }}
-                        </span>
+                                    <span class="ms-2"><i class="bi bi-clock"></i> {{ $reply->created_at->diffForHumans() }}</span>
                                 </div>
-
                                 <div>
                                     {{ $reply->message }}
                                 </div>
-
                             </div>
                         </div>
-
                     @empty
                         <p class="text-muted mb-0">No hay respuestas aún.</p>
                     @endforelse
-
                 </div>
             </div>
 
-            @if($ticket->status == "open" && auth()->user()->id == $ticket->user_id)
-                    <div class="alert alert-warning" role="alert">
-                        Debes esperar a que el ticket sea contestado para poder responder.
-                    </div>
-
-                @elseif($ticket->isClosed())
+            @if($ticket->isClosed())
                 <div class="alert alert-danger" role="alert">
                     El ticket ha sido cerrado, ya no puedes responder.
                 </div>
-                @else
+            @else
 
-        @can('tickets.reply')
-                <div class="card shadow-sm">
-                    <div class="card-header bg-light">
-                        <strong>Responder</strong>
+                @cannot('reply', $ticket)
+                    <div class="alert alert-warning" role="alert">
+                        Debes esperar a que el ticket sea contestado para poder responder.
                     </div>
-                    <div class="card-body">
+                @endcannot
 
-                        <form method="POST" action="{{ route('user.tickets.reply', $ticket) }}">
-                            @csrf
 
-                            <div class="mb-3">
-                                <textarea
-                                    class="form-control"
-                                    name="message"
-                                    rows="4"
-                                    required
-                                    minlength="5"
-                                    placeholder="Escribe tu respuesta..."></textarea>
+                    @can('reply', $ticket)
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-light">
+                                <strong>Responder</strong>
                             </div>
+                            <div class="card-body">
+                                <form method="POST" action="{{ route('user.tickets.reply', $ticket) }}">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <textarea class="form-control" name="message" rows="4" required minlength="10"  placeholder="Escribe tu respuesta..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        Enviar respuesta
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endcan
 
-                            <button type="submit" class="btn btn-primary">
-                                Enviar respuesta
-                            </button>
-
-
-                        </form>
-
-                        <form action="{{ route('user.tickets.close', $ticket) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-danger mt-3">Cerrar ticket</button>
-                        </form>
-
-                    </div>
-                </div>
-            @endcan
+                @can('close',$ticket)
+                    <form action="{{ route('user.tickets.close', $ticket) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-danger mt-3">Cerrar ticket</button>
+                    </form>
+                @endcan
             @endif
+
+
+
+
+
 
         </div>
     </div>
