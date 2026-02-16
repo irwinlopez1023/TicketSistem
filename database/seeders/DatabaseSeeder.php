@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Seeders\Permission\RoleSeeder;
 use Database\Seeders\Ticket\CategorySeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,23 +21,36 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call([
+            RoleSeeder::class,
             CategorySeeder::class,
         ]);
 
-        User::factory()->create([
-          'name' => 'Test User',
-          'email' => 'test@example.com',
-          'password' => bcrypt('test'),
-        ]);
-
-
-        User::factory()->create([
+        $admin =User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
             'password' => bcrypt('admin'),
         ]);
+        $admin->assignRole('admin');
 
-        User::factory(10)->create();
+        $support =User::factory()->create([
+            'name' => 'Support User',
+            'email' => 'support@example.com',
+            'password' => bcrypt('support'),
+        ]);
+        $support->assignRole('support');
+
+
+        $user = User::factory()->create([
+          'name' => 'Test User',
+          'email' => 'test@example.com',
+          'password' => bcrypt('test'),
+        ]);
+        $user->assignRole('user');
+
+
+
+
+        //  User::factory(10)->create();
 
 
 
