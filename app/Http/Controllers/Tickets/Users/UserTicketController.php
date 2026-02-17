@@ -6,6 +6,7 @@ use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket\Category;
+use App\Models\Ticket\Department;
 use App\Models\Ticket\TicketReply;
 use Illuminate\Http\Request;
 use App\Models\Ticket\Ticket;
@@ -24,7 +25,8 @@ class UserTicketController extends Controller
     {
         $this->authorize('create', Ticket::class);
         $categories = Category::all();
-        return view('tickets.users.create', compact('categories'));
+        $departments = Department::all();
+        return view('tickets.users.create', compact('categories', 'departments'));
     }
     public function store(Request $request)
     {
@@ -33,7 +35,8 @@ class UserTicketController extends Controller
             'title' => 'required|min:10|max:255',
             'description' => 'required|min:10',
             'priority' => ['required', new Enum(TicketPriority::class)],
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'department_id' => 'nullable|exists:departments,id'
         ]);
 
         Ticket::create([
@@ -41,6 +44,7 @@ class UserTicketController extends Controller
             'description' => $request->description,
             'priority' => $request->priority,
             'category_id' => $request->category_id,
+            'department_id' => $request->department_id,
             'user_id' => auth()->id()
         ]);
 
@@ -56,7 +60,13 @@ class UserTicketController extends Controller
         $this->authorize('reply', $ticket);
         $request->validate([
             'message' => 'required|min:10',
+            'attachment' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $attachmentPath = null;
+        if ($request->hasFile('attachment')) {
+            $attachmentPath = $request->file('attachment')->store('attachments', 'public');
+        }
 
         if (Auth()->user()->id != $ticket->user_id){
             if (empty($ticket->assignee_id)){ $ticket->assignee_id = Auth()->user()->id; }
@@ -69,7 +79,8 @@ class UserTicketController extends Controller
         $reply = TicketReply::create([
             'ticket_id' => $ticket->id,
             'user_id' => auth()->id(),
-            'message' => $request->message
+            'message' => $request->message,
+            'attachment_path' => $attachmentPath,
         ]);
 
         return redirect()->route('user.tickets.show', $ticket->id)->with('success', 'Respuesta enviada con éxito');

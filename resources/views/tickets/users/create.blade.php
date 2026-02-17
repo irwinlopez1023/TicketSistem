@@ -18,18 +18,25 @@
         <div class="mb-3">
             <label for="priority" class="form-label">Prioridad</label>
             <select class="form-select" name="priority" id="priority" required>
-                <option value="low">Baja</option>
-                <option value="medium">Media</option>
-                <option value="high">Alta</option>
-                <option value="urgent">Urgente</option>
+                @foreach(\App\Enums\TicketPriority::cases() as $priority)
+                    <option value="{{ $priority->value }}">{{ $priority->label() }}</option>
+                @endforeach
             </select>
         </div>
         <div class="mb-3">
             <label for="category" class="form-label">Categoría</label>
             <select class="form-select" name="category_id" id="category" required>
-
                 @foreach ($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="department" class="form-label">Departamento (Opcional)</label>
+            <select class="form-select" name="department_id" id="department">
+                <option value="">Ninguno</option>
+                @foreach ($departments as $department)
+                    <option value="{{ $department->id }}">{{ $department->name }}</option>
                 @endforeach
             </select>
         </div>

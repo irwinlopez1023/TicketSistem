@@ -17,6 +17,12 @@
                             <i class="bi bi-folder2-open"></i>
                             {{ $ticket->category->name }}
                         </span>
+                        @if($ticket->department)
+                            <span>
+                                <i class="bi bi-building"></i>
+                                {{ $ticket->department->name }}
+                            </span>
+                        @endif
                         <span>
                             <i class="bi bi-person"></i>
                             {{ $ticket->user->name }}
@@ -29,12 +35,12 @@
                 </div>
             </div>
             <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-light">
+                <div class="card-header">
                     <strong>Ticket # {{ $ticket->id }}</strong>
                 </div>
                 <div class="card-body">
                     <div class="d-flex mb-3 ">
-                        <div class="p-3 rounded bg-light border" style="max-width: 75%;">
+                        <div class="p-3 rounded border" style="max-width: 75%;">
                             <div class="small mb-1 text-muted">
                                 <i class="bi bi-person"></i> {{ $ticket->user->name }}
                                 <span class="ms-2"> <i class="bi bi-clock"></i> {{ $ticket->created_at->diffForHumans() }} </span>
@@ -46,7 +52,7 @@
                     </div>
                     @forelse ($ticket->replies as $reply)
                         <div class="d-flex mb-3 {{ $reply->isFromTicketOwner() ? '' : 'justify-content-end' }}">
-                            <div class="p-3 rounded {{ $reply->isFromTicketOwner() ? 'bg-light border' : 'bg-primary text-white' }}" style="max-width: 75%;">
+                            <div class="p-3 rounded {{ $reply->isFromTicketOwner() ? 'border' : 'bg-primary text-white' }}" style="max-width: 75%;">
                                 <div class="small mb-1 {{ $reply->isFromTicketOwner() ? 'text-muted' : 'text-white-50' }}">
                                     <i class="bi bi-person"></i>
                                     {{ $reply->user->name }}
@@ -55,6 +61,13 @@
                                 <div>
                                     {{ $reply->message }}
                                 </div>
+                                @if($reply->attachment_url)
+                                    <div class="mt-2">
+                                        <a href="{{ $reply->attachment_url }}" target="_blank">
+                                            <img src="{{ $reply->attachment_url }}" alt="Adjunto" class="img-fluid rounded" style="max-height: 200px;">
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @empty
@@ -74,14 +87,18 @@
                 @endcannot
                     @can('reply', $ticket)
                         <div class="card shadow-sm">
-                            <div class="card-header bg-light">
+                            <div class="card-header">
                                 <strong>Responder</strong>
                             </div>
                             <div class="card-body">
-                                <form method="POST" action="{{ route('user.tickets.reply', $ticket) }}">
+                                <form method="POST" action="{{ route('user.tickets.reply', $ticket) }}" enctype="multipart/form-data">
                                     @csrf
                                     <div class="mb-3">
                                         <textarea class="form-control" name="message" rows="4" required minlength="10"  placeholder="Escribe tu respuesta..."></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="attachment" class="form-label">Adjuntar imagen (Opcional)</label>
+                                        <input class="form-control" type="file" id="attachment" name="attachment" accept="image/*">
                                     </div>
                                     <button type="submit" class="btn btn-primary">
                                         Enviar respuesta

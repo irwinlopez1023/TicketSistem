@@ -14,7 +14,7 @@ class Ticket extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'status', 'priority', 'category_id', 'user_id', 'assignee_id'];
+    protected $fillable = ['title', 'description', 'status', 'priority', 'category_id', 'user_id', 'assignee_id', 'department_id'];
 
     protected $casts = [
         'status' => TicketStatus::class,
@@ -69,5 +69,10 @@ class Ticket extends Model
     public function assignee(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assignee_id', 'id');
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'id');
     }
 }

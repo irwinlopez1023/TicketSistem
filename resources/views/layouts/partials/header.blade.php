@@ -1,4 +1,3 @@
-
 <header
     class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow"
     data-bs-theme="dark"
@@ -47,5 +46,22 @@
             placeholder="Search"
             aria-label="Search"
         />
+    </div>
+    <div class="navbar-nav ms-auto me-3 d-none d-md-block">
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ Auth::user()->name ?? 'Usuario' }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end position-absolute">
+                <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Perfil</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item">Cerrar sesión</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 </header>

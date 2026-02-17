@@ -40,7 +40,27 @@ class TicketPolicy
             return true;
         }
 
-        return $ticket->user_id === $user->id && $ticket->status !== TicketStatus::OPEN;
+        if ($ticket->user_id !== $user->id) {
+            return false;
+        }
+
+        // Permitir responder si el estado NO es OPEN
+        if ($ticket->status !== TicketStatus::OPEN) {
+            return true;
+        }
+
+        // Si el estado es OPEN, permitir hasta 3 respuestas consecutivas del usuario
+        // Contamos las respuestas más recientes del usuario hasta que encontremos una que no sea suya
+        $consecutiveReplies = 0;
+        foreach ($ticket->replies()->latest()->get() as $reply) {
+            if ($reply->user_id === $user->id) {
+                $consecutiveReplies++;
+            } else {
+                break; // Encontramos una respuesta de soporte (u otro usuario), paramos de contar
+            }
+        }
+
+        return $consecutiveReplies < 3;
     }
 
     public function close(User $user, Ticket $ticket)
