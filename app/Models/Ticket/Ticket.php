@@ -14,11 +14,12 @@ class Ticket extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'status', 'priority', 'category_id', 'user_id', 'assignee_id', 'department_id'];
+    protected $fillable = ['title', 'description', 'status', 'priority', 'category_id', 'user_id', 'assignee_id', 'department_id', 'is_escalated'];
 
     protected $casts = [
         'status' => TicketStatus::class,
         'priority' => TicketPriority::class,
+        'is_escalated' => 'boolean',
     ];
 
     public function getDescriptionShortAttribute(): string

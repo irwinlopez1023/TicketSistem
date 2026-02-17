@@ -1,11 +1,42 @@
+@php
+    $headerClass = 'bg-dark'; // Por defecto
+
+    if (Auth::check()) {
+        if (session()->has('impersonated_by')) {
+             $headerClass = 'bg-danger'; // Si está suplantando, rojo para alertar
+        } elseif (Auth::user()->hasRole('admin')) {
+            $headerClass = 'bg-danger'; // Admin siempre rojo
+        } elseif (Auth::user()->department) {
+            // Si tiene departamento, usa el color del departamento (primary, success, etc.)
+            // Asumimos que el color guardado es el nombre de la clase de bootstrap (ej: primary)
+            $headerClass = 'bg-' . Auth::user()->department->color;
+        }
+    }
+@endphp
+
+@if(session()->has('impersonated_by'))
+    <div class="bg-warning text-dark text-center py-1 fw-bold">
+        Estás suplantando a {{ Auth::user()->name }}.
+        <form action="{{ route('impersonate.stop') }}" method="POST" class="d-inline ms-2">
+            @csrf
+            <button type="submit" class="btn btn-sm btn-outline-dark">Volver a mi cuenta</button>
+        </form>
+    </div>
+@endif
+
 <header
-    class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow"
+    class="navbar sticky-top {{ $headerClass }} flex-md-nowrap p-0 shadow"
     data-bs-theme="dark"
 >
     <a
         class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white"
         href="#"
-    >{{ config('app.name','Laravel') }}</a
+    >
+        {{ config('app.name','Laravel') }}
+        @if(Auth::check() && Auth::user()->department)
+            <small class="d-block fw-light" style="font-size: 0.7rem;">{{ Auth::user()->department->name }}</small>
+        @endif
+    </a
     >
     <ul class="navbar-nav flex-row d-md-none">
         <li class="nav-item text-nowrap">

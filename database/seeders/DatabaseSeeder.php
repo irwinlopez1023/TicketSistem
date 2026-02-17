@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
                 DepartmentSeeder::class,
             ]);
 
+            // Admin User (Sin departamento, header rojo por rol)
             $admin = User::factory()->create([
                 'name' => 'Admin User',
                 'email' => 'admin@example.com',
@@ -32,6 +33,15 @@ class DatabaseSeeder extends Seeder
             ]);
             $admin->assignRole('admin');
 
+            // Manager User (Puede ver todo)
+            $manager = User::factory()->create([
+                'name' => 'Manager User',
+                'email' => 'manager@example.com',
+                'password' => bcrypt('manager'),
+            ]);
+            $manager->assignRole('manager');
+
+            // Support User Genérico (Sin departamento, header dark por defecto)
             $support = User::factory()->create([
                 'name' => 'Support User',
                 'email' => 'support@example.com',
@@ -39,6 +49,7 @@ class DatabaseSeeder extends Seeder
             ]);
             $support->assignRole('support');
 
+            // Usuario Normal (Sin departamento, header dark por defecto)
             $user = User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@example.com',

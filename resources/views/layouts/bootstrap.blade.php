@@ -9,7 +9,7 @@
      'resources/css/app.css',
      'resources/css/bootstrap.css',
  ])
-
+    @stack('styles')
 </head>
 <body>
 <x-bd-theme></x-bd-theme>
@@ -31,5 +31,6 @@
 </div>
 
 @vite(['resources/js/bootstrap.js','resources/js/color-modes.js'])
+@stack('scripts')
 </body>
 </html>

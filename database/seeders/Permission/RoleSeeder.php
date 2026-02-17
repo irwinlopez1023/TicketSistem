@@ -28,13 +28,18 @@ class RoleSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'users.manage']);
 
         $admin = Role::firstOrCreate(['name' => 'admin']);
+        $manager = Role::firstOrCreate(['name' => 'manager']);
         $support = Role::firstOrCreate(['name' => 'support']);
         $user = Role::firstOrCreate(['name' => 'user']);
 
         $admin->givePermissionTo(Permission::all());
-        $support->givePermissionTo(['tickets.delegate', 'tickets.reply', 'tickets.view','tickets.view.all']);
+
+        // Manager ve todo y gestiona, similar a admin pero quizás sin gestión de usuarios del sistema
+        $manager->givePermissionTo(['tickets.view.all', 'tickets.delegate', 'tickets.climb', 'tickets.reply', 'tickets.update', 'tickets.create']);
+
+        // Soporte ve tickets de su área (controlado por lógica, no solo permiso)
+        $support->givePermissionTo(['tickets.delegate', 'tickets.reply', 'tickets.view', 'tickets.create']);
+
         $user->givePermissionTo(['tickets.view', 'tickets.create', 'tickets.reply']);
-
-
     }
 }
