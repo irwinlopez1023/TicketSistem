@@ -13,6 +13,7 @@ class UserSeeder extends Seeder
 
         $users = [
             ['name' => "Administrador", 'code' => 'admin', 'role' => 'admin'],
+            ['name' => "Manager", 'code' => 'manager', 'role' => 'manager'],
             ['name' => "Usuario de prueba", 'code' => 'test', 'role' => 'user'],
         ];
 

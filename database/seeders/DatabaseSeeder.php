@@ -24,11 +24,6 @@ class DatabaseSeeder extends Seeder
 
         $departments = [
             [
-                'name' => 'Manager',
-                'code' => 'manager',
-                'role' => 'manager'
-            ],
-            [
                 'name' => 'Soporte Técnico',
                 'code' => 'soporte',
                 'role' => 'support'
