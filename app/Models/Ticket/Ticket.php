@@ -2,13 +2,13 @@
 
 namespace App\Models\Ticket;
 
-use App\Enums\Enums\Tickets\TicketPriority;
-use App\Enums\Enums\Tickets\TicketStatus;
+use App\Enums\Tickets\TicketPriority;
+use App\Enums\Tickets\TicketStatus;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\User;
 use Illuminate\Support\Str;
 
 /**

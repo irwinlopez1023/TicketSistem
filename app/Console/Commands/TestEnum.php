@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Ticket\Ticket;
 use Illuminate\Console\Command;
 
-use App\Models\Ticket\Ticket;
-use App\Enums\Enums\Tickets\TicketStatus;
 class TestEnum extends Command
 {
 

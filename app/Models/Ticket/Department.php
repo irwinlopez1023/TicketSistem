@@ -32,7 +32,6 @@ class Department extends Model
 {
     use SoftDeletes;
     protected $fillable = ['name'];
-
     public function users(): HasMany
     {
         return $this->HasMany(User::class, 'department_id');

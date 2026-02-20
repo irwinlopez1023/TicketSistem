@@ -2,9 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket\Ticket;
-use App\Enums\Enums\Tickets\TicketStatus;
+use App\Models\User;
+
 class TicketPolicy
 {
     /**

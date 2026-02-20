@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Tickets\Users;
 
+use App\Enums\Tickets\TicketStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket\Department;
+use App\Models\Ticket\Ticket;
 use App\Models\Ticket\TicketReply;
 use Illuminate\Http\Request;
-use App\Models\Ticket\Ticket;
-use App\Enums\Enums\Tickets\TicketStatus;
-use App\Enums\Enums\Tickets\TicketPriority;
+
 class UserTicketController extends Controller
 {
     public function index()
@@ -21,8 +21,8 @@ class UserTicketController extends Controller
     public function create()
     {
         $this->authorize('create', Ticket::class);
-        $departaments = Department::all();
-        return view('tickets.users.create', compact('departaments'));
+        $departments = Department::all();
+        return view('tickets.users.create', compact('departments'));
     }
     public function store(Request $request)
     {
@@ -32,14 +32,14 @@ class UserTicketController extends Controller
             'title' => 'required|min:10|max:255',
             'description' => 'required|min:10',
             'priority' => 'required|in:low,medium,high,urgent',
-            'departament_id' => 'required|exists:departaments,id'
+            'department_id' => 'required|exists:departments,id'
         ]);
 
         Ticket::create([
             'title' => $request->title,
             'description' => $request->description,
             'priority' => $request->priority,
-            'departament_id' => $request->departament_id,
+            'department_id' => $request->department_id,
             'user_id' => auth()->id()
         ]);
 

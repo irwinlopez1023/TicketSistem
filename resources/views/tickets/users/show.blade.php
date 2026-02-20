@@ -17,7 +17,7 @@
                     <div class="mt-2 small text-muted d-flex flex-wrap gap-3">
                         <span>
                             <i class="bi bi-folder2-open"></i>
-                            {{ $ticket->departament->name }}
+                            {{ $ticket->department->name }}
                         </span>
                         <span>
                             <i class="bi bi-person"></i>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="card-body" id="chat-body" style="max-height: 400px; overflow-y: auto;">
                     <div class="d-flex mb-3 ">
-                        <div class="p-3 rounded bg-color border" style="max-width: 75%;">
+                        <div class="p-3 rounded bg-color bozrder" style="max-width: 75%;">
                             <div class="small mb-1 text-muted">
                                 <i class="bi bi-person"></i> {{ $ticket->user->name }}
                                 <span class="ms-2"> <i class="bi bi-clock"></i> {{ $ticket->created_at->diffForHumans() }} </span>
@@ -46,6 +46,7 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
                     @forelse ($ticket->replies as $reply)
                         <div class="d-flex mb-3 {{ $reply->isFromTicketOwner() ? '' : 'justify-content-end' }}">
                             <div class="p-3 rounded {{ $reply->isFromTicketOwner() ? 'bg-color border' : 'bg-primary text-white' }}" style="max-width: 75%;">
@@ -125,4 +126,5 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
     });
-</script</x-bootstrap>
+</script>
+</x-bootstrap>

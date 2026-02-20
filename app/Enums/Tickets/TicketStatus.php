@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Enums\Tickets;
+namespace App\Enums\Tickets;
 
 enum TicketStatus: string
 {

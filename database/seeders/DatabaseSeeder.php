@@ -54,13 +54,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
         ]);
+        $this->callWith(DepartmentSeeder::class,[
+            'departments' => $departments
+        ]);
 
         if(config('app.env') === "local") {
             $confirm = $this->command->confirm("Estas por crear usuarios de prueba, confirma la acción con Y: ",true);
             if ($confirm){
-                $this->callWith(DepartmentSeeder::class,[
-                    'departments' => $departments
-                ]);
                 $this->callWith(UserSeeder::class,[
                     'departments' => $departments
                 ]);
