@@ -17,7 +17,7 @@
                     <div class="mt-2 small text-muted d-flex flex-wrap gap-3">
                         <span>
                             <i class="bi bi-folder2-open"></i>
-                            {{ $ticket->category->name }}
+                            {{ $ticket->departament->name }}
                         </span>
                         <span>
                             <i class="bi bi-person"></i>
@@ -111,7 +111,7 @@
                     <div class="card-body">
                         <p>Nombre: {{ $ticket->user->name }}</p>
                         <p>Email: <a href="mailto:{{$ticket->user->email}}" alt="Enviar correo"> {{ $ticket->user->email }}</a></p>
-                        <p>Categoría: {{ $ticket->category->name }}</p>
+                        <p>Categoría: {{ $ticket->departament->name }}</p>
                     </div>
                 </div>
             </div>
@@ -125,5 +125,4 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
     });
-</script>
-</x-bootstrap>
+</script</x-bootstrap>

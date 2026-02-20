@@ -10,10 +10,47 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User;
 
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $description
+ * @property TicketStatus $status
+ * @property int $user_id
+ * @property int|null $assignee_id
+ * @property int $department_id
+ * @property TicketPriority $priority
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read User|null $assignee
+ * @property-read \App\Models\Ticket\Department $department
+ * @property-read string $description_short
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Ticket\TicketReply> $replies
+ * @property-read int|null $replies_count
+ * @property-read User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereAssigneeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereDepartamentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket wherePriority($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Ticket withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Ticket extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['title', 'description', 'status', 'priority','category_id','user_id','assignee_id'];
+    protected $fillable = ['title', 'description', 'status', 'priority','department_id','user_id','assignee_id'];
     protected $casts = [
         'status' => TicketStatus::class,
         'priority' => TicketPriority::class,
@@ -37,8 +74,8 @@ class Ticket extends Model
     {
         return $this->status === TicketStatus::CLOSED;
     }
-    public function category(): BelongsTo {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+    public function department(): BelongsTo {
+        return $this->belongsTo(Department::class, 'department_id', 'id');
     }
     public function assignee(): BelongsTo
     {

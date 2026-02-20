@@ -25,11 +25,11 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="category" class="form-label">Categoría</label>
-            <select class="form-select" name="category_id" id="category" required>
+            <label for="departament" class="form-label">Departamento</label>
+            <select class="form-select" name="departament_id" id="departament" required>
 
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @foreach ($departaments as $departament)
+                    <option value="{{ $departament->id }}">{{ $departament->name }}</option>
                 @endforeach
             </select>
         </div>

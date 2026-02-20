@@ -28,10 +28,12 @@ class RoleSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'users.manage']);
 
         $admin = Role::firstOrCreate(['name' => 'admin']);
+        $manager = Role::firstOrCreate(['name' => 'manager']);
         $support = Role::firstOrCreate(['name' => 'support']);
         $user = Role::firstOrCreate(['name' => 'user']);
 
         $admin->givePermissionTo(Permission::all());
+        $manager->givePermissionTo(['tickets.view.all', 'tickets.delegate', 'tickets.climb', 'tickets.reply', 'tickets.update', 'tickets.create']);
         $support->givePermissionTo(['tickets.delegate', 'tickets.reply', 'tickets.view','tickets.view.all']);
         $user->givePermissionTo(['tickets.view', 'tickets.create', 'tickets.reply']);
 

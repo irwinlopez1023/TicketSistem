@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Ticket\Department;
 use App\Models\User;
 use Database\Seeders\Permission\RoleSeeder;
-use Database\Seeders\Ticket\CategorySeeder;
+use Database\Seeders\Ticket\DepartmentSeeder;
+use Database\Seeders\User\UserSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,35 +21,47 @@ class DatabaseSeeder extends Seeder
     {
     try {
 
+        $departments = [
+            [
+                'name' => 'Manager',
+                'code' => 'manager',
+                'role' => 'manager'
+            ],
+            [
+                'name' => 'Soporte Técnico',
+                'code' => 'soporte',
+                'role' => 'support'
+            ],
+            [
+                'name' => 'Ventas',
+                'code' => 'ventas',
+                'role' => 'support'
+            ],
+            [
+                'name' => 'Recursos Humanos',
+                'code' => 'rh',
+                'role' => 'support'
+            ],
+            [
+                'name' => 'Otros',
+                'code' => 'otros',
+                'role' => 'support'
+            ],
+
+        ];
 
         $this->call([
             RoleSeeder::class,
-            CategorySeeder::class,
         ]);
 
-        $admin =User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('admin'),
-        ]);
-        $admin->assignRole('admin');
-
-        $support =User::factory()->create([
-            'name' => 'Support User',
-            'email' => 'support@example.com',
-            'password' => bcrypt('support'),
-        ]);
-        $support->assignRole('support');
-
-
-        $user = User::factory()->create([
-          'name' => 'Test User',
-          'email' => 'test@example.com',
-          'password' => bcrypt('test'),
-        ]);
-        $user->assignRole('user');
-
-
+        if(config('app.env') === "local") {
+            $this->callWith(DepartmentSeeder::class,[
+                'departments' => $departments
+            ]);
+            $this->callWith(UserSeeder::class,[
+                'departments' => $departments
+            ]);
+        }
 
 
         //  User::factory(10)->create();

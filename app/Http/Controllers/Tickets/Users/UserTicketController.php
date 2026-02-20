@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Tickets\Users;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ticket\Category;
+use App\Models\Ticket\Department;
 use App\Models\Ticket\TicketReply;
 use Illuminate\Http\Request;
 use App\Models\Ticket\Ticket;
@@ -21,24 +21,25 @@ class UserTicketController extends Controller
     public function create()
     {
         $this->authorize('create', Ticket::class);
-        $categories = Category::all();
-        return view('tickets.users.create', compact('categories'));
+        $departaments = Department::all();
+        return view('tickets.users.create', compact('departaments'));
     }
     public function store(Request $request)
     {
+
         $this->authorize('create', Ticket::class);
         $request->validate([
             'title' => 'required|min:10|max:255',
             'description' => 'required|min:10',
             'priority' => 'required|in:low,medium,high,urgent',
-            'category_id' => 'required|exists:categories,id'
+            'departament_id' => 'required|exists:departaments,id'
         ]);
 
         Ticket::create([
             'title' => $request->title,
             'description' => $request->description,
             'priority' => $request->priority,
-            'category_id' => $request->category_id,
+            'departament_id' => $request->departament_id,
             'user_id' => auth()->id()
         ]);
 
